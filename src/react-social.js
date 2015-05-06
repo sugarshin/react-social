@@ -1,4 +1,4 @@
-;(function (global, factory) {
+;((global, factory) => {
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = factory(require('react'), require('jsonp'), require('object-assign'));
   } else if (typeof define === 'function' && define.amd) {
@@ -6,25 +6,30 @@
   } else {
     global.ReactSocial = factory(global.React, global.jsonp, Object.assign);
   }
-})(this, function (React, jsonp, assign) {
+})(typeof window !== 'undefined' ? window : this, (React, jsonp, assign) => {
 
   if (typeof document === 'undefined' || typeof window === 'undefined') {
     throw new Error('react-social uses jsonp and requires a browser environment');
   }
 
-  var spread = function (obj, omit) {
-    var clone = assign({}, obj);
-
-    omit.forEach(function (key) {
+  const spread = function(obj, omit) {
+    let clone = assign({}, obj);
+    omit.forEach((key) => {
       delete clone[key];
     });
-
     return clone;
   };
 
 
 
   class Count extends React.Component {
+
+    static get defaultProps() {
+      return {
+        url: window.location,
+        element: 'span'
+      };
+    }
 
     constructor(props) {
       super(props);
@@ -42,16 +47,15 @@
       if (this.props.url !== nextProps.url) {
         this.setState({
           count: 0
-        }, function () {
+        }, () => {
           this.updateCount();
         }.bind(this));
       }
     }
 
     updateCount() {
-      var url = this.constructUrl();
-
-      jsonp(url, function (data) {
+      let url = this.constructUrl();
+      jsonp(url, (data) => {
         this.setState({
           count: this.extractCount(data)
         });
@@ -65,19 +69,23 @@
     render() {
       return React.createElement(
         this.props.element,
-        spread(this.props, ["element", "url"]),
+        spread(this.props, ['element', 'url']),
         this.state.count
       );
     }
 
   }
 
-  Count.defaultProps = {
-    url: window.location,
-    element: "span"
-  };
-
   class Button extends React.Component {
+
+    static get defaultProps() {
+      return {
+        element: 'button',
+        url: window.location,
+        text: '',
+        onClick: () => {}
+      };
+    }
 
     constructor(props) {
       super(props);
@@ -85,26 +93,19 @@
 
     click(e) {
       this.props.onClick(e);
-      window.open(this.constructUrl(), "_blank");
+      window.open(this.constructUrl(), '_blank');
     }
 
     render() {
-      var other = spread(this.props, ["onClick", "element", "url"]);
+      let other = spread(this.props, ['onClick', 'element', 'url']);
 
       return React.createElement(
         this.props.element,
-        assign({ "onClick": this.click.bind(this) }, other)
+        assign({onClick: this.click.bind(this)}, other)
       );
     }
 
   }
-
-  Button.defaultProps = {
-    element: "button",
-    url: window.location,
-    text: '',
-    onClick: function() {}
-  };
 
   class FacebookCount extends Count {
 
@@ -113,9 +114,8 @@
     }
 
     constructUrl() {
-      var fql = encodeURIComponent("select like_count, share_count from link_stat where url = '" + this.props.url + "'"),
-          url = "https://api.facebook.com/method/fql.query?format=json&callback=@&query=" + fql;
-
+      let fql = encodeURIComponent(`select like_count, share_count from link_stat where url = "${this.props.url}"`),
+          url = `https://api.facebook.com/method/fql.query?format=json&callback=@&query=${fql}`;
       return url;
     }
 
@@ -134,8 +134,7 @@
     }
 
     constructUrl() {
-      return "https://cdn.api.twitter.com/1/urls/count.json?callback=@&url="
-             + encodeURIComponent(this.props.url);
+      return `https://cdn.api.twitter.com/1/urls/count.json?callback=@&url=${encodeURIComponent(this.props.url)}`;
     }
 
     extractCount(data) {
@@ -151,8 +150,7 @@
     }
 
     constructUrl() {
-      return "https://api.pinterest.com/v1/urls/count.json?callback=@&url="
-             + encodeURIComponent(this.props.url);
+      return `https://api.pinterest.com/v1/urls/count.json?callback=@&url=${encodeURIComponent(this.props.url)}`;
     }
 
     extractCount(data) {
@@ -168,8 +166,7 @@
     }
 
     constructUrl() {
-      return "https://www.facebook.com/sharer/sharer.php?u="
-             + encodeURIComponent(this.props.url);
+      return `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(this.props.url)}`;
     }
 
   }
@@ -181,32 +178,29 @@
     }
 
     constructUrl() {
-      return "https://twitter.com/intent/tweet?url="
-             + encodeURIComponent(this.props.url)
-             + '&text='
-             + this.props.text
+      return `https://twitter.com/intent/tweet?url=${encodeURIComponent(this.props.url)}&text=${this.props.text}`;
     }
 
   }
 
   class PinterestButton extends Button {
 
+    static get propTypes() {
+      return {
+        media: React.PropTypes.string.isRequired
+      };
+    }
+
     constructor(props) {
       super(props);
     }
 
     constructUrl() {
-      var url = "https://pinterest.com/pin/create/button/?url="
-                + encodeURIComponent(this.props.url) + "&media="
-                + encodeURIComponent(this.props.media);
+      let url = `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(this.props.url)}&media=${encodeURIComponent(this.props.media)}`;
       return url;
     }
 
   }
-
-  PinterestButton.propTypes = {
-    media: React.PropTypes.string.isRequired
-  };
 
   return {
     FacebookCount: FacebookCount,
