@@ -1,3 +1,10 @@
+/*!
+ * @license @sugarshin/react-social
+ * (c) sugarshin
+ * Fork on olahol/react-social
+ * License: MIT
+ */
+
 ;((global, factory) => {
   if (typeof module !== 'undefined' && module.exports) {
     module.exports = factory(require('react'), require('jsonp'), require('object-assign'));
@@ -12,7 +19,7 @@
     throw new Error('react-social uses jsonp and requires a browser environment');
   }
 
-  const spread = function(obj, omit) {
+  const spread = (obj, omit) => {
     let clone = assign({}, obj);
     omit.forEach((key) => {
       delete clone[key];
@@ -26,7 +33,7 @@
 
     static get defaultProps() {
       return {
-        url: window.location,
+        url: location.href,
         element: 'span'
       };
     }
@@ -55,7 +62,10 @@
 
     updateCount() {
       let url = this.constructUrl();
-      jsonp(url, (data) => {
+      jsonp(url, (err, data) => {
+        if (err) {
+          throw new Error(err);
+        }
         this.setState({
           count: this.extractCount(data)
         });
@@ -81,7 +91,7 @@
     static get defaultProps() {
       return {
         element: 'button',
-        url: window.location,
+        url: location.href,
         text: '',
         onClick: () => {}
       };
@@ -120,7 +130,9 @@
     }
 
     extractCount(data) {
-      if (!data[0]) { return 0; }
+      if (!data[0]) {
+        return 0;
+      }
 
       return data[0].like_count + data[0].share_count;
     }
