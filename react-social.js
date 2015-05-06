@@ -26,6 +26,7 @@
 
 
   class Count extends React.Component {
+
     constructor(props) {
       super(props);
 
@@ -78,6 +79,7 @@
   };
 
   class Button extends React.Component {
+
     constructor(props) {
       super(props);
     }
@@ -95,22 +97,25 @@
         assign({ "onClick": this.click.bind(this) }, other)
       );
     }
+
   }
 
   Button.defaultProps = {
     element: "button",
     url: window.location,
-    onClick: function () { }
+    text: '',
+    onClick: function() {}
   };
 
   class FacebookCount extends Count {
+
     constructor(props) {
       super(props);
     }
 
     constructUrl() {
-      var fql = encodeURIComponent("select like_count, share_count from link_stat where url = '" + this.props.url + "'")
-        , url = "https://api.facebook.com/method/fql.query?format=json&callback=@&query=" + fql;
+      var fql = encodeURIComponent("select like_count, share_count from link_stat where url = '" + this.props.url + "'"),
+          url = "https://api.facebook.com/method/fql.query?format=json&callback=@&query=" + fql;
 
       return url;
     }
@@ -120,9 +125,11 @@
 
       return data[0].like_count + data[0].share_count;
     }
+
   }
 
   class TwitterCount extends Count {
+
     constructor(props) {
       super(props);
     }
@@ -135,9 +142,11 @@
     extractCount(data) {
       return data.count || 0;
     }
+
   }
 
   class PinterestCount extends Count {
+
     constructor(props) {
       super(props);
     }
@@ -150,9 +159,11 @@
     extractCount(data) {
       return data.count || 0;
     }
+
   }
 
   class FacebookButton extends Button {
+
     constructor(props) {
       super(props);
     }
@@ -161,20 +172,26 @@
       return "https://www.facebook.com/sharer/sharer.php?u="
              + encodeURIComponent(this.props.url);
     }
+
   }
 
   class TwitterButton extends Button {
+
     constructor(props) {
       super(props);
     }
 
     constructUrl() {
-      return "https://twitter.com/home?status="
-             + encodeURIComponent(this.props.url);
+      return "https://twitter.com/intent/tweet?url="
+             + encodeURIComponent(this.props.url)
+             + '&text='
+             + this.props.text
     }
+
   }
 
   class PinterestButton extends Button {
+
     constructor(props) {
       super(props);
     }
@@ -185,6 +202,7 @@
                 + encodeURIComponent(this.props.media);
       return url;
     }
+
   }
 
   PinterestButton.propTypes = {
