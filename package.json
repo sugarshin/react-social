@@ -1,19 +1,21 @@
 {
   "name": "react-social",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "React social buttons, Facebook, Twitter and Pinterest",
-  "main": "react-social.js",
+  "main": "index.js",
   "dependencies": {
     "jsonp": "^0.2.0",
     "object-assign": "^2.0.0",
     "react": "~0.13.2"
   },
   "devDependencies": {
+    "babel": "^5.2.15",
     "babelify": "~6.0.2",
     "beefy": "~2.1.1",
     "browserify": "~8.1.1"
   },
   "scripts": {
+    "compile": "babel src/react-social.js --out-file lib/react-social.js",
     "dev": "beefy dev.jsx --live -- -t babelify"
   },
   "repository": {

@@ -7,7 +7,6 @@
     global.ReactSocial = factory(global.React, global.jsonp, Object.assign);
   }
 })(this, function (React, jsonp, assign) {
-  "use strict";
 
   if (typeof document === 'undefined' || typeof window === 'undefined') {
     throw new Error('react-social uses jsonp and requires a browser environment');
