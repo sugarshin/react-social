@@ -1,21 +1,24 @@
 {
   "name": "react-social",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "description": "React social buttons, Facebook, Twitter and Pinterest",
   "main": "react-social.js",
   "dependencies": {
-    "react": "^0.12.2"
+    "jsonp": "^0.2.0",
+    "object-assign": "^2.0.0",
+    "react": "~0.13.2"
   },
   "devDependencies": {
-    "beefy": "~2.1.1"
-    , "browserify": "~8.1.1"
+    "babelify": "~6.0.2",
+    "beefy": "~2.1.1",
+    "browserify": "~8.1.1"
   },
   "scripts": {
-    "dev": "beefy dev.js --live"
+    "dev": "beefy dev.jsx --live -- -t babelify"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/olahol/react-social"
+    "url": "https://github.com/sugarshin/react-social"
   },
   "keywords": [
     "react",
@@ -27,12 +30,11 @@
     "javascript",
     "react-component"
   ],
-  "author": "Ola Holmström",
-  "contributors": [
-  ],
+  "author": "sugarshin",
+  "contributors": [],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/olahol/react-social/issues"
+    "url": "https://github.com/sugarshin/react-social/issues"
   },
-  "homepage": "https://github.com/olahol/react-social"
+  "homepage": "https://github.com/sugarshin/react-social"
 }
