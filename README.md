@@ -16,10 +16,18 @@ npm install @sugarshin/react-social
 ## Usage
 
 ```js
-let React = require('react');
-let { FacebookButton, FacebookCount } = require('react-social');
+import React from 'react';
+import {
+  FacebookButton,
+  FacebookCount
+} from 'react-social';
 
 class App extends React.Component {
+
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
       <FacebookButton url={this.props.url}>
