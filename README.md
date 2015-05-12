@@ -38,7 +38,10 @@ class App extends React.Component {
   }
 }
 
-React.render(<App url={'https://github.com/sugarshin/react-social'} />, document.body);
+React.render(
+  <App url={'https://github.com/sugarshin/react-social'} />,
+  document.body
+);
 ```
 
 ## Count (FacebookCount, TwitterCount, PinterestCount) API
